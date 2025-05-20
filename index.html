@@ -14,7 +14,7 @@
       background: #fff;
       border-radius: 8px;
       padding: 20px;
-      max-width: 360px;
+      max-width: 400px;
       margin: auto;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
@@ -50,5 +50,60 @@
       cursor: pointer;
       margin-top: 20px;
     }
-    .btn-cart:hover
+    .btn-cart:hover {
+      background-color: #a00000;
+    }
+  </style>
+</head>
+<body>
+  <div class="config-box">
+    <label for="width">Szerokość (cm):</label>
+    <input type="number" id="width" value="100" min="1">
 
+    <label for="height">Wysokość (cm):</label>
+    <input type="number" id="height" value="100" min="1">
+
+    <div class="summary" id="summary">Wybrane: 100 cm x 100 cm</div>
+    <div class="price" id="price">Cena: 115.00 zł</div>
+
+    <button class="btn-cart" onclick="addToCart()">Dodaj do koszyka</button>
+  </div>
+
+  <script>
+    const widthInput = document.getElementById('width');
+    const heightInput = document.getElementById('height');
+    const summary = document.getElementById('summary');
+    const priceEl = document.getElementById('price');
+
+    const updateSummary = () => {
+      const w = parseFloat(widthInput.value);
+      const h = parseFloat(heightInput.value);
+      const area = (w / 100) * (h / 100);
+      const price = (area * 115).toFixed(2);
+
+      summary.textContent = `Wybrane: ${w} cm x ${h} cm`;
+      priceEl.textContent = `Cena: ${price} zł`;
+    };
+
+    widthInput.addEventListener('input', updateSummary);
+    heightInput.addEventListener('input', updateSummary);
+    updateSummary();
+
+    function addToCart() {
+      const w = widthInput.value;
+      const h = heightInput.value;
+      const area = (w / 100) * (h / 100);
+      const price = (area * 115).toFixed(2);
+
+      const msg = `WYMIARY: ${w}x${h} cm, Cena: ${price} zł`;
+
+      // Skopiuj dane do schowka
+      navigator.clipboard.writeText(msg).then(() => {
+        alert("Dodano do zamówienia: " + msg + "\n\nWklej w komentarzu do zamówienia lub uwagach.");
+      });
+
+      // Spróbuj kliknąć istniejący przycisk dodania do koszyka (jeśli go nie usunięto)
+      const originalBtn = document.querySelector('.basket_add_button input[type="submit"]');
+      if (originalBtn) {
+        originalBtn.click();
+      } else {
