@@ -32,8 +32,13 @@
       font-weight: bold;
       margin-top: 15px;
     }
-    button {
-      background: gold;
+    .price {
+      font-size: 1.2em;
+      margin: 10px 0;
+      color: #c40000;
+    }
+    .btn {
+      background: #c40000;
       border: none;
       padding: 12px 20px;
       border-radius: 4px;
@@ -41,15 +46,21 @@
       font-weight: bold;
       transition: background 0.3s;
       width: 100%;
+      color: white;
+      margin-top: 10px;
     }
-    button:hover {
-      background: #ffd700;
+    .btn:hover {
+      background: #a10000;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="config-container">
     <h2>Wybierz wymiary produktu</h2>
+
     <label for="width">Szerokość (cm):</label>
     <input type="number" id="width" min="1" value="100">
 
@@ -57,30 +68,41 @@
     <input type="number" id="height" min="1" value="100">
 
     <div class="summary" id="summary">Wybrane: 100 cm x 100 cm</div>
+    <div class="price" id="price">Cena: 500.00 zł</div>
 
-    <button onclick="copyDimensions()">Skopiuj wymiary</button>
+    <button class="btn" onclick="calculatePrice()">Przelicz cenę</button>
+    <button class="btn hidden" id="addToCartBtn" onclick="copyData()">Dodaj do koszyka</button>
   </div>
 
   <script>
     const widthInput = document.getElementById('width');
     const heightInput = document.getElementById('height');
     const summary = document.getElementById('summary');
+    const price = document.getElementById('price');
+    const addToCartBtn = document.getElementById('addToCartBtn');
 
-    function updateSummary() {
-      summary.textContent = `Wybrane: ${widthInput.value} cm x ${heightInput.value} cm`;
-    }
+    const calculatePrice = () => {
+      const width = parseFloat(widthInput.value);
+      const height = parseFloat(heightInput.value);
+      const area = width * height;
+      const unitPrice = 0.05; // zł/cm²
+      const total = area * unitPrice;
 
-    widthInput.addEventListener('input', updateSummary);
-    heightInput.addEventListener('input', updateSummary);
+      summary.textContent = `Wybrane: ${width} cm x ${height} cm`;
+      price.textContent = `Cena: ${total.toFixed(2)} zł`;
 
-    function copyDimensions() {
-      const text = `Szerokość: ${widthInput.value} cm\nWysokość: ${heightInput.value} cm`;
+      addToCartBtn.classList.remove('hidden');
+    };
+
+    const copyData = () => {
+      const text = `Fototapeta: ${widthInput.value} cm x ${heightInput.value} cm\nCena: ${price.textContent.replace('Cena: ', '')}`;
       navigator.clipboard.writeText(text).then(() => {
-        alert("Wymiary zostały skopiowane do schowka!");
+        alert("Dane zostały skopiowane do schowka.\nMożesz wkleić je w komentarzu do zamówienia.");
       });
-    }
+    };
 
-    updateSummary(); // inicjalna aktualizacja
+    // Inicjalizacja widoku
+    calculatePrice();
   </script>
 </body>
 </html>
