@@ -97,7 +97,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
     <script>
-        const pricePerM2 = 115;
+        const pricePerM2 = 115;  // Cena za metr kwadratowy
         let cropper;
         const image = document.getElementById('image');
         const widthInput = document.getElementById('width');
@@ -119,7 +119,7 @@
             });
         };
 
-        // Aktualizacja ceny i wymiary
+        // Aktualizacja ceny na podstawie wymiarów obrazu
         function updatePrice() {
             const width = parseFloat(widthInput.value);
             const height = parseFloat(heightInput.value);
@@ -129,11 +129,11 @@
             addToCartButton.disabled = false;
         }
 
-        // Obsługa zmian w polach input
+        // Obsługuje zmiany w polach input
         widthInput.addEventListener('input', updatePrice);
         heightInput.addEventListener('input', updatePrice);
 
-        // Obsługa kliknięcia przycisku "Dodaj do koszyka"
+        // Obsługuje kliknięcie przycisku "Dodaj do koszyka"
         addToCartButton.addEventListener('click', () => {
             const width = widthInput.value;
             const height = heightInput.value;
@@ -141,7 +141,7 @@
             const dimensions = `${width}x${height} cm`;
             const message = `WYMIARY: ${dimensions}, CENA: ${price}`;
             alert(message);
-            // Tutaj można dodać kod do dodania produktu do koszyka
+            // Możesz dodać tu kod do dodania do koszyka w systemie
         });
 
         // Inicjalizacja ceny początkowej
